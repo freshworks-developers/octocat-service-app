@@ -6,7 +6,7 @@
       "host": "api.github.com",
       "path": "/repos/<%= iparam.github_repo %>/issues",
       "headers": {
-        "Authorization": "token <%= access_token %>",
+        "Authorization": "Bearer <%= access_token %>",
         "user-agent": "freshworks app",
         "Content-Type": "application/json"
       }
@@ -22,7 +22,7 @@
       "host": "api.github.com",
       "path": "/repos/<%= iparam.github_repo %>/issues/<%= context.issueNumber %>",
       "headers": {
-        "Authorization": "token <%= access_token %>",
+        "Authorization": "Bearer <%= access_token %>",
         "user-agent": "freshworks app"
       }
     },

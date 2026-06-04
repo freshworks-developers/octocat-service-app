@@ -1,23 +1,192 @@
-html {
+:root {
+  --gh-bg: #f6f8fa;
+  --gh-card: #ffffff;
+  --gh-text: #24292f;
+  --gh-muted: #57606a;
+  --gh-border: #d0d7de;
+  --gh-accent: #0969da;
+  --gh-success: #1a7f37;
+}
+
+* {
   box-sizing: border-box;
 }
 
-*,
-*:after,
-*::before {
-  box-sizing: inherit;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  max-width: 100%;
+  background: var(--gh-bg);
+  color: var(--gh-text);
+  font-family:
+    'Segoe UI',
+    system-ui,
+    -apple-system,
+    sans-serif;
 }
 
-.app-body {
+#root,
+.gh-root {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.gh-loading {
+  padding: 16px;
+  color: var(--gh-muted);
+  font-size: 0.85rem;
+}
+
+.gh-sidebar {
+  padding: 14px 12px 16px;
+  max-width: 100%;
+}
+
+.gh-header {
   display: flex;
-  flex-flow: column wrap;
-  justify-content: center;
   align-items: center;
-  font-family: Helvetica, sans-serif;
-  font-size: 1rem;
-  padding: 1rem;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--gh-border);
 }
 
-fw-button {
-  padding: 0.5rem;
+.gh-header-logo {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #eaeef2;
+  border: 1px solid var(--gh-border);
+  overflow: hidden;
+}
+
+.gh-app-logo {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.gh-title {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--gh-text);
+}
+
+.gh-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.62rem;
+  color: var(--gh-muted);
+}
+
+.gh-card {
+  background: var(--gh-card);
+  border: 1px solid var(--gh-border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 3px rgba(36, 41, 47, 0.06);
+}
+
+.gh-linked {
+  border-color: #abdfb3;
+  background: #f6fff8;
+}
+
+.gh-ticket-id {
+  margin: 0 0 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--gh-accent);
+}
+
+.gh-ticket-subject {
+  margin: 0 0 10px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
+  word-break: break-word;
+}
+
+.gh-label-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.gh-section-title {
+  margin: 0 0 10px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--gh-muted);
+}
+
+.gh-detail-row {
+  display: grid;
+  grid-template-columns: 72px 1fr;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 0.68rem;
+  line-height: 1.4;
+}
+
+.gh-detail-label {
+  color: var(--gh-muted);
+  font-weight: 600;
+}
+
+.gh-detail-value {
+  color: var(--gh-text);
+  word-break: break-word;
+}
+
+.gh-body-preview {
+  margin: 10px 0 0;
+  padding: 8px;
+  border-radius: 6px;
+  background: #f6f8fa;
+  border: 1px solid var(--gh-border);
+  font-size: 0.65rem;
+  line-height: 1.45;
+  color: var(--gh-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.gh-muted {
+  margin: 0;
+  font-size: 0.68rem;
+  color: var(--gh-muted);
+}
+
+.gh-sidebar fw-input,
+.gh-sidebar fw-textarea {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.gh-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.gh-actions fw-button {
+  width: 100%;
+}
+
+.gh-sidebar fw-inline-message {
+  display: block;
+  margin-top: 12px;
 }

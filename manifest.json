@@ -7,17 +7,31 @@
         "getGithubIssue": {}
       }
     },
+    "support_ticket": {
+      "location": {
+        "ticket_sidebar": {
+          "url": "index.html",
+          "icon": "logo.png"
+        }
+      }
+    },
     "service_ticket": {
       "location": {
         "ticket_sidebar": {
           "url": "index.html",
-          "icon": "styles/images/icon.svg"
+          "icon": "logo.png"
         }
       }
     }
   },
+  "metaConfig": {
+    "framework": "react"
+  },
   "engines": {
-    "node": "18.16.1",
-    "fdk": "9.1.0"
+    "node": "24.11.1",
+    "fdk": "10.1.2"
+  },
+  "scripts": {
+    "fdk-unit-test": "vitest run --coverage"
   }
 }
