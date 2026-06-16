@@ -4,6 +4,18 @@ Create GitHub issues from Freshdesk or Freshservice ticket sidebars using OAuth 
 
 ![Freshdesk to GitHub Issues — create GitHub issues from the ticket sidebar](app/styles/images/github-banner.png)
 
+## Description
+
+DevBridge Engineering escalates reproducible bugs from Freshdesk and Freshservice tickets directly into GitHub Issues. See [`usecase.md`](usecase.md) for the full DevBridge operational scenarios.
+
+### Core Functionality
+
+1. **Ticket sidebar** — create GitHub issues without leaving Freshdesk or Freshservice
+2. **Live ticket sync** — status and priority update when you change ticket properties
+3. **Editable issue form** — set title and description before creating the issue
+4. **OAuth to GitHub** — secure access via GitHub OAuth App
+5. **Linked issue view** — open the created issue on GitHub from the sidebar
+
 ## Features
 
 - **Ticket sidebar** — create GitHub issues without leaving Freshdesk or Freshservice
@@ -11,6 +23,78 @@ Create GitHub issues from Freshdesk or Freshservice ticket sidebars using OAuth 
 - **Editable issue form** — set title and description before creating the issue
 - **OAuth to GitHub** — secure access via GitHub OAuth App
 - **Linked issue view** — open the created issue on GitHub from the sidebar
+
+## User Interfaces
+
+| Surface | Placement | Behavior |
+| --- | --- | --- |
+| `app/index.html` | `support_ticket.ticket_sidebar` | Create and view linked GitHub issues on Freshdesk |
+| `app/index.html` | `service_ticket.ticket_sidebar` | Same workflow on Freshservice tickets |
+
+## Platform 3.0 Features Used
+
+### 1. OAuth 2.0 — GitHub Integration
+
+`config/oauth_config.json` registers GitHub OAuth with `repo` scope. Client ID and secret are collected via `oauth_iparams` during installation.
+
+### 2. Request Methods — Create and Fetch Issues
+
+| Template | Purpose |
+| --- | --- |
+| `createGithubIssue` | POST new issue to configured `owner/repo` |
+| `getGithubIssue` | GET issue details by number |
+
+### 3. Data & Events APIs — Live Ticket Context
+
+`client.data.get('ticket')` and contact context seed the issue form. **Events API** listeners keep status and priority in sync when ticket properties change.
+
+### 4. Key-Value Storage — Linked Issue Persistence
+
+`client.db` stores the GitHub issue number and URL keyed by Freshdesk ticket ID so agents can reopen the sidebar and continue from the linked issue.
+
+### 5. Crayons UI Components
+
+The app uses Freshworks Crayons v4 design system:
+
+| Component | Usage |
+| --- | --- |
+| `FwButton` | Create issue and open on GitHub |
+| `FwInput` / `FwTextarea` | Editable issue title and description |
+| `FwLabel` | Ticket field labels |
+| `FwInlineMessage` | Success and error feedback |
+
+## Project Structure
+
+```
+octocat-service-app/
+├── app/
+│   ├── index.html              # React Meta entry
+│   ├── components/             # SidebarMain, GitHubSidebar
+│   ├── utils/github.js         # Issue payload, events, client.db helpers
+│   └── styles/
+├── config/
+│   ├── iparams.json            # github_repo, github_assignee
+│   ├── oauth_config.json       # GitHub OAuth + oauth_iparams
+│   └── requests.json           # createGithubIssue, getGithubIssue
+├── tests/
+│   └── github.test.js
+├── manifest.json
+├── usecase.md
+└── README.md
+```
+
+## Prerequisites
+
+- [Freshworks CLI (FDK)](https://developers.freshworks.com/docs/app-sdk/v3.0/support_ticket/basic-dev-tools/freshworks-cli/) v10.1.2 or later
+- Node.js v24.x
+- A Freshdesk or Freshservice trial account
+- A GitHub account with permission to create issues in the target repository
+
+Enable global apps before local development:
+
+```bash
+fdk config set global_apps.enabled true
+```
 
 ---
 
@@ -106,3 +190,38 @@ If the iframe is blank, allow **insecure localhost** in your browser (see Freshw
 - Confirm OAuth is authorized and **github_repo** is valid (`owner/repo`).
 - Authorizing user needs **issue write** permission on the repo.
 - Check browser console and `log/fdk.log` for API errors from GitHub.
+
+---
+
+## Testing
+
+```bash
+fdk validate
+npm run fdk-unit-test
+```
+
+Reset local OAuth and installation parameters when re-testing:
+
+```bash
+rm .fdk/store.sqlite
+fdk run
+```
+
+---
+
+## Key Learnings
+
+1. **OAuth tokens stay server-side** — Request Templates inject GitHub access tokens; React never handles secrets.
+2. **Persist links in client.db** — store issue number per ticket so tier-2 agents see existing escalations on open.
+3. **Events keep UI fresh** — subscribe to ticket property events so sidebar status matches the ticket without reload.
+4. **Cross-product manifest** — one React Meta bundle on `support_ticket` and `service_ticket` covers Freshdesk and Freshservice.
+
+---
+
+## Resources
+
+- [OAuth for third-party services](https://developers.freshworks.com/docs/app-sdk/v3.0/common/advanced-interfaces/oauth/)
+- [Request methods](https://developers.freshworks.com/docs/app-sdk/v3.0/support_ticket/advanced-interfaces/request-method/)
+- [Events method](https://developers.freshworks.com/docs/app-sdk/v3.0/support_ticket/front-end-apps/events-method/)
+- [Key-value storage (client.db)](https://developers.freshworks.com/docs/app-sdk/v3.0/support_ticket/front-end-apps/client-db/)
+- [React Meta apps](https://developers.freshworks.com/docs/app-sdk/v3.0/support_ticket/front-end-apps/react-meta/)
